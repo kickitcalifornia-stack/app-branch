@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The iOS Attribution Journey</title>
+    <title>Kick It: Attribution Strategy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -20,6 +20,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; color: var(--text-dark); overflow-x: hidden; background-color: #f1f5f9; }
+        html { scroll-behavior: smooth; }
 
         /* --- Scroll Animations --- */
         .reveal {
@@ -162,7 +163,7 @@
         .check { color: #10b981; }
         .cross { color: #ef4444; }
 
-        /* --- Recommendation Footer --- */
+        /* --- Recommendation Verdict --- */
         .verdict-section {
             padding: 5rem 10%;
             background: var(--primary);
@@ -178,6 +179,45 @@
             margin: 0 auto;
             backdrop-filter: blur(10px);
         }
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .cta-button:hover { transform: scale(1.05); }
+
+        /* --- Implementation Plan (New) --- */
+        .plan-section {
+            padding: 6rem 10%;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+        .sprint-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .sprint-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .sprint-card h4 { font-size: 1.2rem; margin-bottom: 1rem; color: var(--primary); }
+        .task-list { list-style: none; }
+        .task-list li { margin-bottom: 1rem; display: flex; align-items: flex-start; font-size: 0.95rem; color: #475569; }
+        .task-list li i { margin-right: 12px; margin-top: 4px; color: var(--accent); }
+        .task-meta { font-size: 0.8rem; color: #94a3b8; margin-top: 4px; display: block; }
 
         /* --- Mobile --- */
         @media (max-width: 768px) {
@@ -356,10 +396,117 @@
                 However, for a grant-funded project, <strong>AppsFlyer's "Zero" plan</strong> is the smartest financial move. It solves the iOS blind spot immediately without a monthly subscription.
             </p>
             <div style="margin-top: 3rem;">
-                <button style="padding: 1rem 2rem; background: white; color: var(--primary); border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 1rem;">View AppsFlyer Integration Guide</button>
+                <a href="#implementation-plan" class="cta-button">View Implementation Plan</a>
             </div>
         </div>
     </section>
+
+    <section id="implementation-plan" class="plan-section">
+        <h2 class="section-title reveal">Small Team Implementation Plan</h2>
+        <p style="text-align: center; color: #64748b; max-width: 600px; margin: 0 auto;">A realistic 4-week timeline designed for a "One-Man Shop" + Marketing support.</p>
+        
+        <div class="sprint-container reveal">
+            
+            <div class="sprint-card">
+                <h4>Week 1: Setup (Admin)</h4>
+                <ul class="task-list">
+                    <li>
+                        <i class="far fa-check-circle"></i>
+                        <div>
+                            <strong>Create Account</strong>
+                            <span class="task-meta">Action: Sign up for "Zero" plan or Branch Trial.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="far fa-check-circle"></i>
+                        <div>
+                            <strong>Legal Update</strong>
+                            <span class="task-meta">Action: Update Privacy Policy to mention "Attribution tracking".</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-book-open"></i>
+                        <div>
+                            <strong>Docs Review</strong>
+                            <span class="task-meta"><a href="https://support.appsflyer.com/hc/en-us/articles/207031996-Getting-started-basic-integration" target="_blank" style="color:var(--accent)">AppsFlyer Guide</a> | <a href="https://help.branch.io/developers-hub/docs/ios-basic-integration" target="_blank" style="color:var(--accent)">Branch iOS Docs</a></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sprint-card">
+                <h4>Week 2: Dev Sprint</h4>
+                <ul class="task-list">
+                    <li>
+                        <i class="fas fa-code"></i>
+                        <div>
+                            <strong>Android Integration</strong>
+                            <span class="task-meta">Edit Manifest & Gradle (~3 hours).</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fab fa-apple"></i>
+                        <div>
+                            <strong>iOS Integration</strong>
+                            <span class="task-meta">Add Pods, Edit Info.plist, Enable Assoc. Domains (~5 hours).</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-bug"></i>
+                        <div>
+                            <strong>Test Builds</strong>
+                            <span class="task-meta">Deploy internal test build to TestFlight/Play Console.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sprint-card">
+                <h4>Week 3: Validation</h4>
+                <ul class="task-list">
+                    <li>
+                        <i class="fas fa-vial"></i>
+                        <div>
+                            <strong>The "Kitchen" Test</strong>
+                            <span class="task-meta">Send link to a colleague's iPhone. Verify "Non-Organic" install appears in dashboard.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-qrcode"></i>
+                        <div>
+                            <strong>Asset Gen</strong>
+                            <span class="task-meta">Generate new Smart Links/QR codes for flyers.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sprint-card">
+                <h4>Week 4: Live</h4>
+                <ul class="task-list">
+                    <li>
+                        <i class="fas fa-rocket"></i>
+                        <div>
+                            <strong>Store Update</strong>
+                            <span class="task-meta">Push new App Version to Apple/Google stores.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fas fa-sync"></i>
+                        <div>
+                            <strong>Swap Links</strong>
+                            <span class="task-meta">Update website buttons and email footers with new tracking links.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; background: #2c3e50; color: white; margin-top: 0;">
+        <p>&copy; 2026 Kick It California / ASQ Project Research</p>
+    </footer>
 
     <script>
         // Simple Scroll Reveal Script
