@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attribution Strategy: Branch vs. Alternatives</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #2ecc71;
+            --warning: #f1c40f;
+            --danger: #e74c3c;
+            --light: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --branch-color: #0075C9; /* Branch Blue */
+            --af-color: #4CAF50; /* AppsFlyer Greenish */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--light); color: var(--text); line-height: 1.6; }
+
+        /* Navigation */
+        nav {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #eaeaea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+        .nav-links a { margin-left: 2rem; text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero Section */
+        header {
+            padding: 8rem 5% 4rem;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        h1 { font-size: 3rem; margin-bottom: 1rem; color: var(--primary); letter-spacing: -1px; }
+        .subtitle { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto 2rem; }
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3); }
+
+        /* Sections */
+        section { padding: 4rem 10%; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; margin-bottom: 3rem; font-size: 2rem; font-weight: 700; }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card-header { margin-bottom: 1.5rem; text-align: center; }
+        .card-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+        .price { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 0.5rem 0; }
+        .price span { font-size: 0.9rem; font-weight: 400; color: #777; }
+        
+        .feature-list { list-style: none; margin-top: 1.5rem; text-align: left; }
+        .feature-list li { margin-bottom: 0.8rem; display: flex; align-items: center; font-size: 0.95rem; }
+        .feature-list i { margin-right: 10px; width: 20px; text-align: center; }
+        .check { color: var(--success); }
+        .cross { color: var(--danger); }
+
+        /* Visual Charts */
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .bar-group { margin-bottom: 1.5rem; }
+        .bar-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+        .bar-bg { background: #eee; height: 12px; border-radius: 6px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 6px; animation: grow 1.5s ease-out forwards; width: 0; }
+        
+        @keyframes grow { to { width: var(--w); } }
+
+        /* Timeline */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline::after {
+            content: ''; position: absolute; width: 4px; background-color: #e9ecef; top: 0; bottom: 0; left: 50%; margin-left: -2px;
+        }
+        .container { padding: 10px 40px; position: relative; background-color: inherit; width: 50%; }
+        .container::after {
+            content: ''; position: absolute; width: 20px; height: 20px; right: -10px; background-color: white; border: 4px solid var(--accent); top: 15px; border-radius: 50%; z-index: 1;
+        }
+        .left { left: 0; text-align: right; }
+        .right { left: 50%; text-align: left; }
+        .left::after { right: -14px; }
+        .right::after { left: -14px; }
+        .content { padding: 20px 30px; background-color: white; position: relative; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+        /* Resources */
+        .resources-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .resource-card {
+            background: white; padding: 1.5rem; border-radius: 10px; border-left: 5px solid var(--accent);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: 0.3s;
+        }
+        .resource-card:hover { transform: translateX(5px); }
+        .resource-card h4 { margin-bottom: 0.5rem; }
+        .resource-card a { color: var(--accent); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+
+        /* Mobile Adjustments */
+        @media screen and (max-width: 600px) {
+            .timeline::after { left: 31px; }
+            .container { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .container::after { left: 21px; }
+            .left { text-align: left; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Kick It <span style="font-weight:300">Analytics</span></div>
+        <div class="nav-links">
+            <a href="#comparison">Comparison</a>
+            <a href="#schedule">Timeline</a>
+            <a href="#resources">Resources</a>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Closing the iOS Attribution Gap</h1>
+        <p class="subtitle">A strategic comparison of Branch.io vs. AppsFlyer for tracking mobile installs and deep linking.</p>
+        <a href="#comparison" class="btn">View Analysis</a>
+    </header>
+
+    <section id="comparison">
+        <h2 class="section-title">The Options</h2>
+        <div class="comparison-grid">
+            
+            <div class="card" style="border-top: 5px solid var(--branch-color);">
+                <div class="card-header">
+                    <i class="fas fa-code-branch card-icon" style="color: var(--branch-color);"></i>
+                    <h3>Branch.io</h3>
+                    <p class="price">$200<span>/mo (est)</span></p>
+                    <small>Best for UX & Deep Linking</small>
+                </div>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check check"></i> Tracks iOS & Android seamlessly</li>
+                    <li><i class="fas fa-check check"></i> Best-in-class Deep Linking</li>
+                    <li><i class="fas fa-check check"></i> "People-based" Attribution</li>
+                    <li><i class="fas fa-times cross"></i> Expensive starting price</li>
+                    <li><i class="fas fa-times cross"></i> Price jumps after 10k users</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-top: 5px solid var(--af-color);">
+                <div class="card-header">
+                    <i class="fas fa-paper-plane card-icon" style="color: var(--af-color);"></i>
+                    <h3>AppsFlyer</h3>
+                    <p class="price">Free<span> / Start</span></p>
+                    <small>Best for Budget & Analytics</small>
+                </div>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check check"></i> Free for first 12k installs</li>
+                    <li><i class="fas fa-check check"></i> Robust Fraud Protection</li>
+                    <li><i class="fas fa-check check"></i> Solves iOS Gap</li>
+                    <li><i class="fas fa-check check"></i> Good Deep Linking (OneLink)</li>
+                    <li><i class="fas fa-exclamation-triangle" style="color:orange"></i> Complex UI for beginners</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-top: 5px solid #7f8c8d;">
+                <div class="card-header">
+                    <i class="fas fa-wrench card-icon" style="color: #7f8c8d;"></i>
+                    <h3>Manual / HubSpot</h3>
+                    <p class="price">$0<span> / Cost</span></p>
+                    <small>High Labor / Low Accuracy</small>
+                </div>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check check"></i> No new software needed</li>
+                    <li><i class="fas fa-times cross"></i> Tracks clicks, not installs</li>
+                    <li><i class="fas fa-times cross"></i> Manual CSV exports required</li>
+                    <li><i class="fas fa-times cross"></i> "Blind" on iOS conversions</li>
+                    <li><i class="fas fa-times cross"></i> High friction for users</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Performance Metrics</h2>
+        <div class="chart-container">
+            <div class="bar-group">
+                <div class="bar-label">
+                    <span>Deep Linking Experience (UX)</span>
+                    <span>Branch is Leader</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="--w: 95%; background-color: var(--branch-color);"></div>
+                </div>
+            </div>
+            <div class="bar-group">
+                <div class="bar-label">
+                    <span>Setup Simplicity</span>
+                    <span>AppsFlyer & Branch are similar</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="--w: 70%; background-color: #95a5a6;"></div>
+                </div>
+            </div>
+            <div class="bar-group">
+                <div class="bar-label">
+                    <span>Cost Effectiveness (Small Scale)</span>
+                    <span>AppsFlyer Wins</span>
+                </div>
+                <div class="bar-bg">
+                    <div class="bar-fill" style="--w: 90%; background-color: var(--af-color);"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="schedule">
+        <h2 class="section-title">Implementation Schedule</h2>
+        <div class="timeline">
+            <div class="container left">
+                <div class="content">
+                    <h3>Day 1: Accounts & Config</h3>
+                    <p>Create account, set up Link Domains (e.g., kickit.app.link), and configure Dashboard settings.</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h3>Day 2: Android Dev</h3>
+                    <p>Update `build.gradle`, add SDK keys, and configure Intent Filters for App Links.</p>
+                </div>
+            </div>
+            <div class="container left">
+                <div class="content">
+                    <h3>Day 3: iOS Dev</h3>
+                    <p>Install Pods, update Info.plist, and enable "Associated Domains" in Xcode.</p>
+                </div>
+            </div>
+            <div class="container right">
+                <div class="content">
+                    <h3>Day 4: QA & Marketing</h3>
+                    <p>Test "Click-to-Install" flow on real devices. Generate new QR codes for print materials.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resources">
+        <h2 class="section-title">Guides & Resources</h2>
+        <div class="resources-grid">
+            <div class="resource-card">
+                <h4><i class="fab fa-youtube" style="color:red"></i> Branch.io Implementation</h4>
+                <p>Video overview of how the SDK is added to mobile apps.</p>
+                <a href="https://www.youtube.com/watch?v=Mx2gS5tY7Qk" target="_blank">Watch Video &rarr;</a>
+            </div>
+            <div class="resource-card">
+                <h4><i class="fas fa-book"></i> Branch Docs (iOS)</h4>
+                <p>Official technical documentation for iOS implementation.</p>
+                <a href="https://help.branch.io/developers-hub/docs/ios-basic-integration" target="_blank">Read Docs &rarr;</a>
+            </div>
+            <div class="resource-card">
+                <h4><i class="fas fa-book"></i> AppsFlyer Guide</h4>
+                <p>Getting started with the "Zero" plan for startups.</p>
+                <a href="https://support.appsflyer.com/hc/en-us/articles/207031996-Getting-started-basic-integration" target="_blank">Read Docs &rarr;</a>
+            </div>
+            <div class="resource-card">
+                <h4><i class="fab fa-hubspot" style="color:orange"></i> HubSpot Integration</h4>
+                <p>How to use Zapier to connect attribution data to HubSpot.</p>
+                <a href="https://zapier.com/apps/hubspot/integrations/branch" target="_blank">View Zapier Flow &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; background: #2c3e50; color: white; margin-top: 4rem;">
+        <p>&copy; 2026 Kick It California / ASQ Project Research</p>
+    </footer>
+
+</body>
+</html>
