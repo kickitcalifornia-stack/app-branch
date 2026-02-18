@@ -14,6 +14,7 @@
             --appsflyer: #8BC34A;
             --hubspot: #ff7a59;
             --danger: #EF4444;
+            --success: #10b981;
             --text-light: #F8FAFC;
             --text-dark: #1E293B;
             --bg-light: #f8fafc;
@@ -103,6 +104,22 @@
         table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         th, td { padding: 1.5rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
         th { background: #f8fafc; font-size: 0.85rem; text-transform: uppercase; color: #64748b; }
+
+        /* --- FEEDBACK SURVEY --- */
+        .feedback-container {
+            text-align: center; padding: 4rem 0; background: #f1f5f9; margin-top: 2rem;
+        }
+        .feedback-title { font-size: 1.1rem; color: #64748b; margin-bottom: 1.5rem; }
+        .feedback-icons { display: flex; justify-content: center; gap: 2rem; }
+        .feedback-btn {
+            background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #94a3b8; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .feedback-btn:hover { transform: scale(1.3); }
+        .feedback-btn.happy:hover { color: var(--success); }
+        .feedback-btn.sad:hover { color: var(--danger); }
+        
+        .thank-you-msg { display: none; color: var(--success); font-weight: bold; font-size: 1.2rem; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     </style>
 </head>
@@ -370,6 +387,21 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions...)
 
         </section>
 
+        <div class="feedback-container">
+            <p id="feedback-text" class="feedback-title">Was this strategy helpful?</p>
+            <div class="feedback-icons" id="feedback-icons">
+                <button class="feedback-btn happy" onclick="submitFeedback('happy')">
+                    <i class="far fa-smile"></i>
+                </button>
+                <button class="feedback-btn sad" onclick="submitFeedback('sad')">
+                    <i class="far fa-frown"></i>
+                </button>
+            </div>
+            <div id="feedback-msg" class="thank-you-msg">
+                <i class="fas fa-check-circle"></i> Thanks for your feedback!
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -383,6 +415,14 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions...)
             document.getElementById('plan-' + planType).classList.add('active');
             // Set active button
             btnElement.classList.add('active');
+        }
+
+        function submitFeedback(type) {
+            // Hide icons
+            document.getElementById('feedback-icons').style.display = 'none';
+            document.getElementById('feedback-text').style.display = 'none';
+            // Show Message
+            document.getElementById('feedback-msg').style.display = 'block';
         }
     </script>
 </body>
