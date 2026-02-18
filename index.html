@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kick It: The Complete Strategy</title>
+    <title>Kick It: Comprehensive Attribution Strategy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -16,370 +16,373 @@
             --danger: #EF4444;
             --text-light: #F8FAFC;
             --text-dark: #1E293B;
-            --bg-light: #f1f5f9;
+            --bg-light: #f8fafc;
+            --sidebar-width: 280px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); overflow-x: hidden; background-color: var(--bg-light); }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: var(--bg-light); display: flex; }
         html { scroll-behavior: smooth; }
 
-        /* --- UTILITY ANIMATIONS --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- HERO SECTION --- */
-        header {
+        /* --- SIDEBAR NAV --- */
+        .sidebar {
+            width: var(--sidebar-width);
             height: 100vh;
-            background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(59,130,246,0.8)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            background: white;
+            position: fixed;
+            left: 0; top: 0;
+            border-right: 1px solid #e2e8f0;
+            padding: 2rem;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 2rem; display: block; }
+        .nav-item { display: block; padding: 0.8rem 0; color: #64748b; text-decoration: none; font-weight: 500; transition: 0.2s; }
+        .nav-item:hover, .nav-item.active { color: var(--accent); padding-left: 10px; }
+        .nav-section { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: #94a3b8; margin-top: 2rem; margin-bottom: 0.5rem; font-weight: 700; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 0;
+        }
+
+        /* --- SECTIONS --- */
+        section { padding: 5rem 10%; border-bottom: 1px solid #e2e8f0; background: white; }
+        section:nth-child(even) { background: #f8fafc; }
+        
+        h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary); }
+        h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-dark); }
+        p { line-height: 1.7; margin-bottom: 1.5rem; color: #475569; max-width: 800px; }
+
+        /* --- HERO --- */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), #1e293b);
             color: white;
-            padding: 0 20px;
+            padding: 8rem 10%;
         }
-        header h1 { font-size: 4rem; margin-bottom: 1rem; letter-spacing: -2px; text-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        header p { font-size: 1.5rem; max-width: 600px; font-weight: 300; opacity: 0.9; }
-        .scroll-indicator { position: absolute; bottom: 30px; animation: bounce 2s infinite; cursor: pointer; }
-        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.25rem; color: #cbd5e1; }
 
-        /* --- THE PROBLEM SECTION --- */
-        .problem-section { padding: 6rem 10%; background: white; text-align: center; }
-        .blind-spot-graphic { display: flex; justify-content: center; gap: 2rem; margin-top: 3rem; flex-wrap: wrap; }
-        .spot-card {
-            background: #f8fafc; border: 1px solid #e2e8f0; padding: 2rem; border-radius: 12px; width: 300px; position: relative;
-        }
-        .spot-card.bad { border-color: var(--danger); background: #fef2f2; }
-        .spot-card i { font-size: 3rem; margin-bottom: 1rem; display: block; }
-
-        /* --- THE JOURNEY SECTION --- */
-        .journey-section { background: var(--primary); color: white; padding: 6rem 10%; }
-        .journey-title { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; }
-        .timeline-step { display: flex; margin-bottom: 4rem; align-items: center; opacity: 0.5; transition: 0.5s; }
-        .timeline-step.active { opacity: 1; }
-        .step-icon {
-            width: 80px; height: 80px; background: var(--accent); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 2rem; flex-shrink: 0;
-            box-shadow: 0 0 20px rgba(59,130,246,0.5);
-        }
-        .step-content .alert { color: var(--danger); font-weight: bold; display: block; margin-top: 0.5rem; }
-
-        /* --- MATRIX TABLE --- */
-        .matrix-section { padding: 6rem 10%; background: white; }
-        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 3rem; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .comparison-table th, .comparison-table td { padding: 1.5rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
-        .comparison-table th { background: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
-        .check { color: #10b981; } .cross { color: #ef4444; }
-
-        /* --- DECISION ENGINE (INTERACTIVE) --- */
-        .decision-section { padding: 6rem 5%; background: #f1f5f9; border-top: 1px solid #e2e8f0; }
-        .decision-header { text-align: center; margin-bottom: 3rem; }
-        .decision-grid {
-            max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
-        }
+        /* --- CARDS (PROS/CONS) --- */
+        .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .analysis-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2rem; position: relative; overflow: hidden; }
+        .analysis-card.branch { border-top: 5px solid var(--branch); }
+        .analysis-card.af { border-top: 5px solid var(--appsflyer); }
+        .analysis-card.hub { border-top: 5px solid var(--hubspot); }
         
-        .option-card {
-            background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; position: relative; overflow: hidden;
-        }
-        .option-card:hover { transform: translateY(-5px); }
-        .option-card.selected { transform: scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-        .option-card.selected::after {
-            content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 20px; right: 20px; font-size: 1.5rem;
-        }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1rem; color: white; }
+        .list-group { margin-top: 1rem; }
+        .list-item { display: flex; align-items: flex-start; margin-bottom: 0.8rem; font-size: 0.95rem; }
+        .list-item i { margin-right: 10px; margin-top: 4px; }
+        .check { color: #10b981; } .cross { color: #ef4444; } .warn { color: #f59e0b; }
 
-        /* Branding Colors */
-        .option-card[data-type="branch"] { border-top: 6px solid var(--branch); }
-        .option-card[data-type="branch"].selected { border-color: var(--branch); }
-        .option-card[data-type="branch"].selected::after { color: var(--branch); }
+        /* --- RESOURCES --- */
+        .resource-link {
+            display: flex; align-items: center; background: white; padding: 1.5rem; border-radius: 8px; 
+            border: 1px solid #e2e8f0; margin-bottom: 1rem; transition: 0.2s; text-decoration: none; color: var(--text-dark);
+        }
+        .resource-link:hover { transform: translateX(10px); border-color: var(--accent); }
+        .resource-icon { font-size: 1.5rem; margin-right: 1.5rem; color: var(--accent); }
+
+        /* --- INTERACTIVE IMPLEMENTATION --- */
+        .impl-selector { display: flex; gap: 1rem; margin-bottom: 2rem; }
+        .selector-btn {
+            padding: 1rem 2rem; border: 1px solid #cbd5e1; background: white; border-radius: 8px; cursor: pointer; font-weight: 600; flex: 1; text-align: center;
+        }
+        .selector-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         
-        .option-card[data-type="appsflyer"] { border-top: 6px solid var(--appsflyer); }
-        .option-card[data-type="appsflyer"].selected { border-color: var(--appsflyer); }
-        .option-card[data-type="appsflyer"].selected::after { color: var(--appsflyer); }
-        
-        .option-card[data-type="manual"] { border-top: 6px solid var(--hubspot); }
-        .option-card[data-type="manual"].selected { border-color: var(--hubspot); }
-        .option-card[data-type="manual"].selected::after { color: var(--hubspot); }
+        .plan-details { display: none; animation: fadeUp 0.4s ease; }
+        .plan-details.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .btn-select {
-            display: block; width: 100%; padding: 0.8rem; border-radius: 8px; border: none; font-weight: 600; margin-top: 1rem;
-            cursor: pointer; background: #f1f5f9; color: #64748b; transition: 0.2s;
-        }
-        .option-card.selected .btn-select { background: var(--primary); color: white; }
+        .code-block { background: #1e293b; color: #a5b4fc; padding: 1rem; border-radius: 6px; font-family: monospace; font-size: 0.9rem; margin: 1rem 0; overflow-x: auto; }
 
-        /* --- DYNAMIC PLAN DISPLAY --- */
-        .plan-display { max-width: 900px; margin: 3rem auto; display: none; animation: fadeIn 0.5s ease-out; }
-        .plan-display.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- MATRIX --- */
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        th, td { padding: 1.5rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; font-size: 0.85rem; text-transform: uppercase; color: #64748b; }
 
-        .plan-header { display: flex; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0; }
-        .plan-badge { padding: 0.5rem 1rem; border-radius: 50px; color: white; font-weight: bold; font-size: 0.9rem; margin-right: 1rem; }
-        
-        .sprint-box { background: white; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; border-left: 5px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        .checklist-item { display: flex; align-items: flex-start; margin-bottom: 1.2rem; padding: 10px; border-radius: 8px; transition: background 0.2s; cursor: pointer; }
-        .checklist-item:hover { background: #f8fafc; }
-        .custom-checkbox {
-            width: 24px; height: 24px; border: 2px solid #cbd5e1; border-radius: 6px; margin-right: 15px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center; color: white; transition: 0.2s;
-        }
-        .custom-checkbox.checked { background: var(--accent); border-color: var(--accent); }
-        .code-snippet { display: block; background: #1e293b; color: #bef264; font-family: monospace; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 5px; width: fit-content; }
-
-        /* Mobile */
-        @media (max-width: 768px) {
-            header h1 { font-size: 2.5rem; }
-            .blind-spot-graphic { flex-direction: column; align-items: center; }
-            .comparison-table { display: block; overflow-x: auto; }
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1 class="reveal">The "Black Box" Problem</h1>
-        <p class="reveal" style="transition-delay: 0.2s">Why we are flying blind on iOS & how to fix it.</p>
-        <div class="scroll-indicator" onclick="document.querySelector('.problem-section').scrollIntoView()">
-            <i class="fas fa-chevron-down"></i>
-        </div>
-    </header>
+    <nav class="sidebar">
+        <div class="logo">Kick It <span style="font-weight:300">Analytics</span></div>
+        
+        <div class="nav-section">Strategy Deck</div>
+        <a href="#hero" class="nav-item">Executive Summary</a>
+        <a href="#problem" class="nav-item">The "Black Box" Problem</a>
+        <a href="#options" class="nav-item">Detailed Analysis</a>
+        <a href="#matrix" class="nav-item">Comparison Matrix</a>
+        
+        <div class="nav-section">Action Plan</div>
+        <a href="#resources" class="nav-item">Resources & Guides</a>
+        <a href="#implementation" class="nav-item active">Implementation Plan</a>
+    </nav>
 
-    <section class="problem-section">
-        <h2 class="reveal" style="font-size: 2.5rem; margin-bottom: 1rem;">Current State: The Data Gap</h2>
-        <p class="reveal" style="color: #64748b; max-width: 600px; margin: 0 auto;">
-            Since Apple's privacy updates (iOS 14.5+), we cannot see where iPhone users come from.
-            While Android is clear, iOS is a "Black Box."
-        </p>
-        <div class="blind-spot-graphic reveal">
-            <div class="spot-card">
-                <i class="fab fa-android" style="color: #3DDC84;"></i>
-                <h3>Google / Android</h3>
-                <p style="margin-top:10px; color: #10b981; font-weight:bold;">100% Tracked</p>
-                <p style="font-size:0.9rem; margin-top:10px; color:#64748b;">We use Device IDs. We know exactly which ad drove the install.</p>
-            </div>
-            <div class="spot-card bad">
-                <i class="fab fa-apple" style="color: #000;"></i>
-                <h3>Apple iOS</h3>
-                <p style="margin-top:10px; color: var(--danger); font-weight:bold;">0% Attribution</p>
-                <p style="font-size:0.9rem; margin-top:10px; color:#64748b;">Device IDs are blocked. Marketing installs look like "Organic" traffic.</p>
-            </div>
-        </div>
-    </section>
+    <main class="main-content">
 
-    <section class="journey-section">
-        <h2 class="journey-title reveal">Where we lose them</h2>
-        <div class="timeline-step reveal">
-            <div class="step-icon"><i class="fas fa-envelope-open-text"></i></div>
-            <div class="step-content">
-                <h3>1. The Outreach</h3>
-                <p>We send an email or run an ad for "Kick It". The user is interested.</p>
-            </div>
-        </div>
-        <div class="timeline-step reveal">
-            <div class="step-icon"><i class="fas fa-mouse-pointer"></i></div>
-            <div class="step-content">
-                <h3>2. The Click</h3>
-                <p>They click the link. <br><span class="alert">Without a tool, the trail ends here for iOS.</span></p>
-            </div>
-        </div>
-        <div class="timeline-step reveal">
-            <div class="step-icon" style="background: #10b981;"><i class="fas fa-link"></i></div>
-            <div class="step-content">
-                <h3>3. The Solution</h3>
-                <p><strong>Branch / AppsFlyer</strong> bridges this gap by "fingerprinting" the click and matching it to the install.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="matrix-section">
-        <h2 class="reveal" style="text-align: center; font-size: 2rem;">Feature Comparison</h2>
-        <table class="comparison-table reveal">
-            <thead>
-                <tr>
-                    <th>Feature</th>
-                    <th>Branch.io</th>
-                    <th>AppsFlyer</th>
-                    <th>Manual (HubSpot)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>iOS Attribution</strong></td>
-                    <td><i class="fas fa-star" style="color:#FFD700"></i> Best</td>
-                    <td><i class="fas fa-check check"></i> Excellent</td>
-                    <td><i class="fas fa-times cross"></i> Blind</td>
-                </tr>
-                <tr>
-                    <td><strong>Deep Linking</strong></td>
-                    <td><i class="fas fa-star" style="color:#FFD700"></i> Industry Standard</td>
-                    <td><i class="fas fa-check check"></i> Good (OneLink)</td>
-                    <td><i class="fas fa-times cross"></i> None</td>
-                </tr>
-                <tr>
-                    <td><strong>Cost to Start</strong></td>
-                    <td>~$2,400 / yr</td>
-                    <td><span style="color:#10b981; font-weight:bold;">$0 / yr</span></td>
-                    <td>$0 (Time)</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <section class="decision-section" id="action-plan">
-        <div class="decision-header reveal">
-            <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Implementation Strategy</h2>
-            <p style="color: #64748b;">Select a path below to generate the custom work plan for the Kick It California app.</p>
-        </div>
-
-        <div class="decision-grid reveal">
-            <div class="option-card" data-type="branch" onclick="selectPlan('branch')">
-                <h3 style="margin-bottom:0.5rem;"><i class="fas fa-code-branch" style="color:var(--branch); margin-right:10px;"></i> Branch.io</h3>
-                <p style="font-size:1.2rem; font-weight:bold; color:var(--text-dark);">~$200/mo</p>
-                <p style="font-size:0.9rem; color:#64748b; margin: 1rem 0;">Best for Deep Linking (Email-to-App). Requires contract navigation.</p>
-                <button class="btn-select">Select Strategy</button>
-            </div>
-
-            <div class="option-card" data-type="appsflyer" onclick="selectPlan('appsflyer')">
-                <h3 style="margin-bottom:0.5rem;"><i class="fas fa-paper-plane" style="color:var(--appsflyer); margin-right:10px;"></i> AppsFlyer</h3>
-                <p style="font-size:1.2rem; font-weight:bold; color:var(--text-dark);">Free <span style="font-size:0.8rem; font-weight:normal;">(Zero Plan)</span></p>
-                <p style="font-size:0.9rem; color:#64748b; margin: 1rem 0;">Best for Attribution Analytics. Free for startups.</p>
-                <button class="btn-select">Select Strategy</button>
-            </div>
-
-            <div class="option-card" data-type="manual" onclick="selectPlan('manual')">
-                <h3 style="margin-bottom:0.5rem;"><i class="fab fa-hubspot" style="color:var(--hubspot); margin-right:10px;"></i> Manual</h3>
-                <p style="font-size:1.2rem; font-weight:bold; color:var(--text-dark);">$0 <span style="font-size:0.8rem; font-weight:normal;">(High Labor)</span></p>
-                <p style="font-size:0.9rem; color:#64748b; margin: 1rem 0;">Uses existing HubSpot LP. No iOS deep install tracking.</p>
-                <button class="btn-select">Select Strategy</button>
+        <div id="hero" class="hero">
+            <h1>Closing the iOS Gap</h1>
+            <p>A comprehensive strategy to fix attribution blind spots for Kick It California & ASQ.</p>
+            <div style="margin-top: 2rem;">
+                <span style="background:rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); margin-right: 10px;">Feb 2026</span>
+                <span style="background:rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2);">Presenter: One-Man Shop</span>
             </div>
         </div>
 
-        <div id="plan-branch" class="plan-display">
-            <div class="plan-header">
-                <span class="plan-badge" style="background:var(--branch)">Selected: Branch.io</span>
-                <h2>One-Man Shop Integration Plan</h2>
-            </div>
-            <div class="sprint-box" style="border-left-color: var(--branch)">
-                <h3 style="color:var(--branch)">Phase 1: Admin & Config</h3>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>1. Sign up for "Launch" Plan</strong><p>Requires credit card. Watch MAU limits.</p></div>
+        <section id="problem">
+            <h2>The "Black Box" Problem</h2>
+            <p><strong>The Situation:</strong> We are fully tracked on Android (via Device ID) but flying blind on iOS. Apple's privacy changes (iOS 14.5+) block us from seeing which ads or emails drive iPhone installs.</p>
+            
+            <div style="display: flex; gap: 2rem; margin-top: 3rem;">
+                <div style="flex: 1; padding: 2rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;">
+                    <h3 style="color: #166534;"><i class="fab fa-android"></i> Android Status</h3>
+                    <p style="margin:0;"><strong>100% Visibility.</strong> We know exactly where users come from. We can optimize spend and retarget effectively.</p>
                 </div>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>2. Config Link Domain</strong><p>Set up <code>kickit.app.link</code> in dashboard.</p></div>
+                <div style="flex: 1; padding: 2rem; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px;">
+                    <h3 style="color: #991b1b;"><i class="fab fa-apple"></i> iOS Status</h3>
+                    <p style="margin:0;"><strong>0% Visibility.</strong> All marketing installs appear as "Organic." We cannot justify ad spend or track email conversion.</p>
                 </div>
             </div>
-            <div class="sprint-box" style="border-left-color: var(--branch)">
-                <h3 style="color:var(--branch)">Phase 2: Dev Work</h3>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>1. iOS: Assoc. Domains</strong><p>Add <code>applinks:kickit.app.link</code> in Xcode.</p></div>
-                </div>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>2. iOS: Info.plist</strong><p>Add <code>branch_key</code> string.</p></div>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <div id="plan-appsflyer" class="plan-display">
-            <div class="plan-header">
-                <span class="plan-badge" style="background:var(--appsflyer)">Selected: AppsFlyer</span>
-                <h2>One-Man Shop Integration Plan</h2>
-            </div>
-            <div class="sprint-box" style="border-left-color: var(--appsflyer)">
-                <h3 style="color:var(--appsflyer)">Phase 1: Setup</h3>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>1. Select "Zero" Plan</strong><p>No credit card required. Get <code>Dev_Key</code>.</p></div>
-                </div>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>2. iOS: Add Pod</strong><p><code>pod 'AppsFlyerLib'</code></p></div>
-                </div>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>3. iOS: ATT Prompt</strong><p>Add tracking permission request in AppDelegate.</p><span class="code-snippet">AppsFlyerLib.shared().waitForATTUserAuthorization</span></div>
-                </div>
-            </div>
-        </div>
+        <section id="options">
+            <h2>Detailed Options Analysis</h2>
+            <p>We have three viable paths. Here is the brutally honest breakdown of costs, pros, and cons for our specific team size.</p>
 
-        <div id="plan-manual" class="plan-display">
-            <div class="plan-header">
-                <span class="plan-badge" style="background:var(--hubspot)">Selected: Manual</span>
-                <h2>One-Man Shop Integration Plan</h2>
-            </div>
-            <div class="sprint-box" style="border-left-color: var(--hubspot)">
-                <h3 style="color:var(--hubspot)">Phase 1: Workflow</h3>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>1. Create Gateway LP</strong><p>HubSpot page with "Download iOS" buttons.</p></div>
+            <div class="analysis-grid">
+                
+                <div class="analysis-card branch">
+                    <span class="badge" style="background:var(--branch)">Option A: The Gold Standard</span>
+                    <h3>Branch.io</h3>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 1rem 0;">~$200<span style="font-size:1rem; font-weight:400; color:#64748b;">/mo</span></div>
+                    
+                    <div class="list-group">
+                        <div class="list-item"><i class="fas fa-check check"></i> <strong>Best-in-Class UX:</strong> Seamless "Deep Linking" from email to specific app screens.</div>
+                        <div class="list-item"><i class="fas fa-check check"></i> <strong>Solved:</strong> Fixes iOS tracking immediately.</div>
+                        <div class="list-item"><i class="fas fa-exclamation-triangle warn"></i> <strong>The "Cliff":</strong> Includes 10k Monthly Active Users. If we grow past this, prices spike significantly.</div>
+                        <div class="list-item"><i class="fas fa-times cross"></i> <strong>Cost:</strong> $2,400/year recurring cost.</div>
+                    </div>
                 </div>
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                    <div class="task-content"><strong>2. Monthly Export</strong><p>SQL export of new user emails from App DB.</p></div>
+
+                <div class="analysis-card af">
+                    <span class="badge" style="background:var(--appsflyer)">Option B: The Smart Start</span>
+                    <h3>AppsFlyer</h3>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 1rem 0;">Free<span style="font-size:1rem; font-weight:400; color:#64748b;"> (Zero Plan)</span></div>
+                    
+                    <div class="list-group">
+                        <div class="list-item"><i class="fas fa-check check"></i> <strong>Budget Friendly:</strong> Free for the first 12,000 non-organic installs (ads/emails).</div>
+                        <div class="list-item"><i class="fas fa-check check"></i> <strong>Analytics Power:</strong> Industry leader in fraud detection and data accuracy.</div>
+                        <div class="list-item"><i class="fas fa-check check"></i> <strong>Solved:</strong> Fixes iOS tracking immediately.</div>
+                        <div class="list-item"><i class="fas fa-exclamation-triangle warn"></i> <strong>UI Complexity:</strong> The dashboard is data-heavy; slightly steeper learning curve than Branch.</div>
+                    </div>
+                </div>
+
+                <div class="analysis-card hub">
+                    <span class="badge" style="background:var(--hubspot)">Option C: The Manual Grind</span>
+                    <h3>HubSpot Manual</h3>
+                    <div style="font-size: 2rem; font-weight: 800; margin: 1rem 0;">$0<span style="font-size:1rem; font-weight:400; color:#64748b;"> (+ Labor)</span></div>
+                    
+                    <div class="list-group">
+                        <div class="list-item"><i class="fas fa-check check"></i> <strong>No New Tech:</strong> Uses our existing HubSpot Landing Pages.</div>
+                        <div class="list-item"><i class="fas fa-times cross"></i> <strong>Blind Spots:</strong> We only track "Clicks," not "Installs." Low accuracy.</div>
+                        <div class="list-item"><i class="fas fa-times cross"></i> <strong>Labor:</strong> Requires monthly SQL/CSV exports and manual data merging.</div>
+                        <div class="list-item"><i class="fas fa-times cross"></i> <strong>Bad UX:</strong> Forces user to a landing page first, rather than direct-to-store.</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="matrix">
+            <h2>Feature Comparison</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Branch.io</th>
+                        <th>AppsFlyer</th>
+                        <th>Manual (HubSpot)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>iOS Attribution</strong></td>
+                        <td style="color:var(--branch); font-weight:bold;">Excellent</td>
+                        <td style="color:var(--appsflyer); font-weight:bold;">Excellent</td>
+                        <td style="color:var(--danger);">Estimates Only</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deep Linking</strong></td>
+                        <td>Best in Class</td>
+                        <td>Good (OneLink)</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost</strong></td>
+                        <td>~$200/mo</td>
+                        <td><strong>Free</strong> (Startups)</td>
+                        <td>$0 (Time Cost)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dev Effort</strong></td>
+                        <td>Moderate (SDK)</td>
+                        <td>Moderate (SDK)</td>
+                        <td>High (Monthly Manual)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="resources">
+            <h2>Resources & Guides</h2>
+            <p>Direct links to the documentation needed for the "One-Man Shop" implementation.</p>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <h4 style="margin-bottom:1rem; color:var(--branch)">Branch.io Resources</h4>
+                    <a href="https://help.branch.io/developers-hub/docs/ios-basic-integration" target="_blank" class="resource-link">
+                        <i class="fas fa-book resource-icon"></i>
+                        <div>
+                            <strong>iOS Integration Docs</strong>
+                            <div style="font-size:0.85rem; color:#64748b;">Official guide for Info.plist & CocoaPods.</div>
+                        </div>
+                    </a>
+                    <a href="https://university.branch.io/" target="_blank" class="resource-link">
+                        <i class="fas fa-graduation-cap resource-icon"></i>
+                        <div>
+                            <strong>Branch University</strong>
+                            <div style="font-size:0.85rem; color:#64748b;">Video courses on Deep Linking 101.</div>
+                        </div>
+                    </a>
+                </div>
+
+                <div>
+                    <h4 style="margin-bottom:1rem; color:var(--appsflyer)">AppsFlyer Resources</h4>
+                    <a href="https://support.appsflyer.com/hc/en-us/articles/207031996-Getting-started-basic-integration" target="_blank" class="resource-link">
+                        <i class="fas fa-rocket resource-icon" style="color:var(--appsflyer)"></i>
+                        <div>
+                            <strong>Zero Plan Guide</strong>
+                            <div style="font-size:0.85rem; color:#64748b;">Startup guide for first-time setup.</div>
+                        </div>
+                    </a>
+                    <a href="https://dev.appsflyer.com/hc/docs/integrate-ios-sdk" target="_blank" class="resource-link">
+                        <i class="fab fa-apple resource-icon" style="color:var(--appsflyer)"></i>
+                        <div>
+                            <strong>iOS SDK Guide</strong>
+                            <div style="font-size:0.85rem; color:#64748b;">Technical guide for AppDelegate & ATT.</div>
+                        </div>
+                    </a>
                 </div>
             </div>
-        </div>
+        </section>
 
-    </section>
+        <section id="implementation">
+            <h2>Implementation Plan</h2>
+            <p>Select a strategy to view the specific checklist and code requirements.</p>
 
-    <footer style="text-align: center; padding: 2rem; background: #2c3e50; color: white;">
-        <p>&copy; 2026 Kick It California / ASQ Project Research</p>
-    </footer>
+            <div class="impl-selector">
+                <button class="selector-btn active" onclick="showPlan('branch', this)">Branch.io</button>
+                <button class="selector-btn" onclick="showPlan('appsflyer', this)">AppsFlyer</button>
+                <button class="selector-btn" onclick="showPlan('manual', this)">Manual / HubSpot</button>
+            </div>
+
+            <div id="plan-branch" class="plan-details active">
+                <div style="background: var(--bg-light); padding: 2rem; border-radius: 8px; border-left: 5px solid var(--branch);">
+                    <h3 style="color:var(--branch)">Branch.io Implementation Checklist</h3>
+                    
+                    <h4 style="margin-top:1.5rem;">Phase 1: Dashboard Config</h4>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> Set up Link Domain (e.g., <code>kickit.app.link</code>).</li>
+                        <li class="list-item"><i class="far fa-square"></i> Retrieve "Live Key" and "Test Key".</li>
+                    </ul>
+
+                    <h4 style="margin-top:1.5rem;">Phase 2: iOS Code (The Hard Part)</h4>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> <strong>CocoaPods:</strong> Add <code>pod 'Branch'</code> to Podfile.</li>
+                        <li class="list-item"><i class="far fa-square"></i> <strong>Info.plist:</strong> Add keys:</li>
+                    </ul>
+                    <div class="code-block">
+&lt;key&gt;branch_key&lt;/key&gt;
+&lt;string&gt;key_live_kaFuWw8...&lt;/string&gt;
+&lt;key&gt;branch_universal_link_domains&lt;/key&gt;
+&lt;array&gt;
+    &lt;string&gt;kickit.app.link&lt;/string&gt;
+&lt;/array&gt;
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> <strong>Capabilities:</strong> Enable "Associated Domains" in Xcode and add <code>applinks:kickit.app.link</code>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="plan-appsflyer" class="plan-details">
+                <div style="background: var(--bg-light); padding: 2rem; border-radius: 8px; border-left: 5px solid var(--appsflyer);">
+                    <h3 style="color:var(--appsflyer)">AppsFlyer Implementation Checklist</h3>
+                    
+                    <h4 style="margin-top:1.5rem;">Phase 1: Zero Plan Setup</h4>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> Create account and select "Zero" Plan.</li>
+                        <li class="list-item"><i class="far fa-square"></i> Get Dev Key from Dashboard settings.</li>
+                    </ul>
+
+                    <h4 style="margin-top:1.5rem;">Phase 2: iOS Code</h4>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> <strong>CocoaPods:</strong> Add <code>pod 'AppsFlyerLib'</code>.</li>
+                        <li class="list-item"><i class="far fa-square"></i> <strong>AppDelegate:</strong> Initialize the SDK.</li>
+                    </ul>
+                    <div class="code-block">
+import AppsFlyerLib
+
+func application(_ application: UIApplication, didFinishLaunchingWithOptions...) {
+    AppsFlyerLib.shared().appsFlyerDevKey = "YOUR_DEV_KEY"
+    AppsFlyerLib.shared().appleAppID = "123456789"
+}
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> <strong>ATT Prompt:</strong> You MUST add the "App Tracking Transparency" prompt logic or Apple will reject the build.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="plan-manual" class="plan-details">
+                <div style="background: var(--bg-light); padding: 2rem; border-radius: 8px; border-left: 5px solid var(--hubspot);">
+                    <h3 style="color:var(--hubspot)">Manual Implementation Checklist</h3>
+                    
+                    <h4 style="margin-top:1.5rem;">Phase 1: Marketing Assets</h4>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> Create HubSpot Landing Page (The "Gateway").</li>
+                        <li class="list-item"><i class="far fa-square"></i> Create two CTA Buttons: "Download iOS" and "Download Android".</li>
+                    </ul>
+
+                    <h4 style="margin-top:1.5rem;">Phase 2: The Monthly Ritual</h4>
+                    <ul class="list-group">
+                        <li class="list-item"><i class="far fa-square"></i> <strong>Export:</strong> Run SQL query on App Database for new signups (Last 30 Days).</li>
+                        <li class="list-item"><i class="far fa-square"></i> <strong>Clean:</strong> Format CSV to match HubSpot import properties.</li>
+                        <li class="list-item"><i class="far fa-square"></i> <strong>Import:</strong> Upload to HubSpot and map <code>Email</code> -> <code>Email</code>.</li>
+                        <li class="list-item"><i class="far fa-square"></i> <strong>Update:</strong> Bulk update property <code>App_Status</code> to "Installed".</li>
+                    </ul>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
 
     <script>
-        // SCROLL ANIMATION
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            var steps = document.querySelectorAll(".timeline-step");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 150) reveals[i].classList.add("active");
-            }
-            for (var j = 0; j < steps.length; j++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = steps[j].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) steps[j].classList.add("active");
-            }
-        }
-        window.addEventListener("scroll", reveal);
-        reveal();
-
-        // SELECTION LOGIC
-        function selectPlan(type) {
-            document.querySelectorAll('.option-card').forEach(card => {
-                card.classList.remove('selected');
-                card.querySelector('.btn-select').innerText = "Select Strategy";
-            });
+        function showPlan(planType, btnElement) {
+            // Hide all plans
+            document.querySelectorAll('.plan-details').forEach(el => el.classList.remove('active'));
+            // Remove active state from buttons
+            document.querySelectorAll('.selector-btn').forEach(el => el.classList.remove('active'));
             
-            const selectedCard = document.querySelector(`.option-card[data-type="${type}"]`);
-            selectedCard.classList.add('selected');
-            selectedCard.querySelector('.btn-select').innerText = "Selected";
-
-            document.querySelectorAll('.plan-display').forEach(plan => plan.classList.remove('active'));
-            
-            const targetPlan = document.getElementById(`plan-${type}`);
-            if(targetPlan) {
-                targetPlan.classList.add('active');
-                setTimeout(() => targetPlan.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-            }
-        }
-
-        function toggleCheck(item) {
-            item.querySelector('.custom-checkbox').classList.toggle('checked');
+            // Show selected plan
+            document.getElementById('plan-' + planType).classList.add('active');
+            // Set active button
+            btnElement.classList.add('active');
         }
     </script>
 </body>
