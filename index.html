@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Attribution Implementation Plan</title>
+    <title>Kick It: The Complete Strategy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -13,391 +13,373 @@
             --branch: #0075C9;
             --appsflyer: #8BC34A;
             --hubspot: #ff7a59;
+            --danger: #EF4444;
+            --text-light: #F8FAFC;
             --text-dark: #1E293B;
-            --bg-light: #f8fafc;
+            --bg-light: #f1f5f9;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: var(--bg-light); }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); overflow-x: hidden; background-color: var(--bg-light); }
         html { scroll-behavior: smooth; }
 
-        /* Header */
+        /* --- UTILITY ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- HERO SECTION --- */
         header {
-            background: var(--primary);
-            color: white;
-            padding: 4rem 2rem;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(59,130,246,0.8)), url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-        }
-        h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        p.subtitle { opacity: 0.8; max-width: 600px; margin: 0 auto; }
-
-        /* Decision Section */
-        .decision-section {
-            max-width: 1200px;
-            margin: -3rem auto 2rem;
+            color: white;
             padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
         }
+        header h1 { font-size: 4rem; margin-bottom: 1rem; letter-spacing: -2px; text-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        header p { font-size: 1.5rem; max-width: 600px; font-weight: 300; opacity: 0.9; }
+        .scroll-indicator { position: absolute; bottom: 30px; animation: bounce 2s infinite; cursor: pointer; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
-        .option-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
+        /* --- THE PROBLEM SECTION --- */
+        .problem-section { padding: 6rem 10%; background: white; text-align: center; }
+        .blind-spot-graphic { display: flex; justify-content: center; gap: 2rem; margin-top: 3rem; flex-wrap: wrap; }
+        .spot-card {
+            background: #f8fafc; border: 1px solid #e2e8f0; padding: 2rem; border-radius: 12px; width: 300px; position: relative;
         }
+        .spot-card.bad { border-color: var(--danger); background: #fef2f2; }
+        .spot-card i { font-size: 3rem; margin-bottom: 1rem; display: block; }
 
-        .option-card:hover { transform: translateY(-5px); }
+        /* --- THE JOURNEY SECTION --- */
+        .journey-section { background: var(--primary); color: white; padding: 6rem 10%; }
+        .journey-title { text-align: center; margin-bottom: 4rem; font-size: 2.5rem; }
+        .timeline-step { display: flex; margin-bottom: 4rem; align-items: center; opacity: 0.5; transition: 0.5s; }
+        .timeline-step.active { opacity: 1; }
+        .step-icon {
+            width: 80px; height: 80px; background: var(--accent); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-right: 2rem; flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(59,130,246,0.5);
+        }
+        .step-content .alert { color: var(--danger); font-weight: bold; display: block; margin-top: 0.5rem; }
+
+        /* --- MATRIX TABLE --- */
+        .matrix-section { padding: 6rem 10%; background: white; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 3rem; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .comparison-table th, .comparison-table td { padding: 1.5rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .comparison-table th { background: #f8fafc; color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        .check { color: #10b981; } .cross { color: #ef4444; }
+
+        /* --- DECISION ENGINE (INTERACTIVE) --- */
+        .decision-section { padding: 6rem 5%; background: #f1f5f9; border-top: 1px solid #e2e8f0; }
+        .decision-header { text-align: center; margin-bottom: 3rem; }
+        .decision-grid {
+            max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+        }
         
-        /* Selection States */
-        .option-card.selected {
-            transform: scale(1.02);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        .option-card {
+            background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; position: relative; overflow: hidden;
         }
+        .option-card:hover { transform: translateY(-5px); }
+        .option-card.selected { transform: scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
         .option-card.selected::after {
-            content: '\f00c';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.5rem;
+            content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 20px; right: 20px; font-size: 1.5rem;
         }
 
-        /* Specific Card Styles */
+        /* Branding Colors */
         .option-card[data-type="branch"] { border-top: 6px solid var(--branch); }
         .option-card[data-type="branch"].selected { border-color: var(--branch); }
         .option-card[data-type="branch"].selected::after { color: var(--branch); }
-
+        
         .option-card[data-type="appsflyer"] { border-top: 6px solid var(--appsflyer); }
         .option-card[data-type="appsflyer"].selected { border-color: var(--appsflyer); }
         .option-card[data-type="appsflyer"].selected::after { color: var(--appsflyer); }
-
+        
         .option-card[data-type="manual"] { border-top: 6px solid var(--hubspot); }
         .option-card[data-type="manual"].selected { border-color: var(--hubspot); }
         .option-card[data-type="manual"].selected::after { color: var(--hubspot); }
 
-        .card-title { font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 800; }
-        .card-price { font-size: 1.2rem; color: #64748b; margin-bottom: 1.5rem; }
         .btn-select {
-            display: block;
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            margin-top: 1rem;
-            cursor: pointer;
-            background: #f1f5f9;
-            color: #64748b;
+            display: block; width: 100%; padding: 0.8rem; border-radius: 8px; border: none; font-weight: 600; margin-top: 1rem;
+            cursor: pointer; background: #f1f5f9; color: #64748b; transition: 0.2s;
         }
         .option-card.selected .btn-select { background: var(--primary); color: white; }
 
-        /* Dynamic Plan Section */
-        .plan-display {
-            max-width: 900px;
-            margin: 3rem auto;
-            padding: 0 20px;
-            display: none; /* Hidden by default */
-            animation: fadeIn 0.5s ease-out;
-        }
+        /* --- DYNAMIC PLAN DISPLAY --- */
+        .plan-display { max-width: 900px; margin: 3rem auto; display: none; animation: fadeIn 0.5s ease-out; }
         .plan-display.active { display: block; }
-        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .plan-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        .plan-badge {
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-right: 1rem;
-        }
+        .plan-header { display: flex; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e2e8f0; }
+        .plan-badge { padding: 0.5rem 1rem; border-radius: 50px; color: white; font-weight: bold; font-size: 0.9rem; margin-right: 1rem; }
         
-        /* Checklists */
-        .sprint-box {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 5px solid #cbd5e1;
-        }
-        .sprint-box h3 { margin-bottom: 1.5rem; color: var(--primary); display: flex; justify-content: space-between; }
-        .time-est { font-size: 0.9rem; background: #f1f5f9; padding: 4px 10px; border-radius: 4px; color: #64748b; }
-
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.2rem;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
+        .sprint-box { background: white; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; border-left: 5px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .checklist-item { display: flex; align-items: flex-start; margin-bottom: 1.2rem; padding: 10px; border-radius: 8px; transition: background 0.2s; cursor: pointer; }
         .checklist-item:hover { background: #f8fafc; }
-        
         .custom-checkbox {
-            width: 24px; height: 24px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            margin-right: 15px;
-            flex-shrink: 0;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            color: white;
+            width: 24px; height: 24px; border: 2px solid #cbd5e1; border-radius: 6px; margin-right: 15px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; color: white; transition: 0.2s;
         }
         .custom-checkbox.checked { background: var(--accent); border-color: var(--accent); }
-        
-        .task-content strong { display: block; margin-bottom: 4px; color: var(--text-dark); }
-        .task-content p { font-size: 0.9rem; color: #64748b; }
-        .code-snippet {
-            display: block;
-            background: #1e293b;
-            color: #bef264;
-            font-family: monospace;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            margin-top: 5px;
-            width: fit-content;
-        }
+        .code-snippet { display: block; background: #1e293b; color: #bef264; font-family: monospace; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; margin-top: 5px; width: fit-content; }
 
+        /* Mobile */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .blind-spot-graphic { flex-direction: column; align-items: center; }
+            .comparison-table { display: block; overflow-x: auto; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Implementation Strategy</h1>
-        <p class="subtitle">Select a path below to generate the custom work plan for the Kick It California app.</p>
+        <h1 class="reveal">The "Black Box" Problem</h1>
+        <p class="reveal" style="transition-delay: 0.2s">Why we are flying blind on iOS & how to fix it.</p>
+        <div class="scroll-indicator" onclick="document.querySelector('.problem-section').scrollIntoView()">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </header>
 
-    <div class="decision-section">
-        
-        <div class="option-card" data-type="branch" onclick="selectPlan('branch')">
-            <div class="card-title"><i class="fas fa-code-branch" style="color:var(--branch)"></i> Branch.io</div>
-            <div class="card-price">~$200/mo <span style="font-size:0.8rem">(Starts at)</span></div>
-            <p style="font-size:0.9rem; color:#64748b; margin-bottom:1rem;">
-                Best for Deep Linking (Email-to-App). Requires contract navigation.
-            </p>
-            <button class="btn-select" id="btn-branch">Select Strategy</button>
-        </div>
-
-        <div class="option-card" data-type="appsflyer" onclick="selectPlan('appsflyer')">
-            <div class="card-title"><i class="fas fa-paper-plane" style="color:var(--appsflyer)"></i> AppsFlyer</div>
-            <div class="card-price">Free <span style="font-size:0.8rem">(Zero Plan)</span></div>
-            <p style="font-size:0.9rem; color:#64748b; margin-bottom:1rem;">
-                Best for Attribution Analytics. Free for startups.
-            </p>
-            <button class="btn-select" id="btn-appsflyer">Select Strategy</button>
-        </div>
-
-        <div class="option-card" data-type="manual" onclick="selectPlan('manual')">
-            <div class="card-title"><i class="fab fa-hubspot" style="color:var(--hubspot)"></i> Manual</div>
-            <div class="card-price">$0 <span style="font-size:0.8rem">(High Labor)</span></div>
-            <p style="font-size:0.9rem; color:#64748b; margin-bottom:1rem;">
-                Uses existing HubSpot LP. No iOS deep install tracking.
-            </p>
-            <button class="btn-select" id="btn-manual">Select Strategy</button>
-        </div>
-
-    </div>
-
-    <div id="plan-branch" class="plan-display">
-        <div class="plan-header">
-            <span class="plan-badge" style="background:var(--branch)">Selected: Branch.io</span>
-            <h2>One-Man Shop Integration Plan</h2>
-        </div>
-
-        <div class="sprint-box" style="border-left-color: var(--branch)">
-            <h3>Phase 1: Admin & Config <span class="time-est">Est: 2 Hours</span></h3>
-            
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>1. Sign up for "Launch" Plan</strong>
-                    <p>Requires credit card. <b>Warning:</b> Set a calendar reminder to check MAU volume monthly to avoid overage fees.</p>
-                </div>
+    <section class="problem-section">
+        <h2 class="reveal" style="font-size: 2.5rem; margin-bottom: 1rem;">Current State: The Data Gap</h2>
+        <p class="reveal" style="color: #64748b; max-width: 600px; margin: 0 auto;">
+            Since Apple's privacy updates (iOS 14.5+), we cannot see where iPhone users come from.
+            While Android is clear, iOS is a "Black Box."
+        </p>
+        <div class="blind-spot-graphic reveal">
+            <div class="spot-card">
+                <i class="fab fa-android" style="color: #3DDC84;"></i>
+                <h3>Google / Android</h3>
+                <p style="margin-top:10px; color: #10b981; font-weight:bold;">100% Tracked</p>
+                <p style="font-size:0.9rem; margin-top:10px; color:#64748b;">We use Device IDs. We know exactly which ad drove the install.</p>
             </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>2. Configure Link Domain</strong>
-                    <p>In Dashboard, set up <code>kickit.app.link</code> (or similar). This prevents having to mess with DNS records on your main site.</p>
-                </div>
+            <div class="spot-card bad">
+                <i class="fab fa-apple" style="color: #000;"></i>
+                <h3>Apple iOS</h3>
+                <p style="margin-top:10px; color: var(--danger); font-weight:bold;">0% Attribution</p>
+                <p style="font-size:0.9rem; margin-top:10px; color:#64748b;">Device IDs are blocked. Marketing installs look like "Organic" traffic.</p>
             </div>
         </div>
+    </section>
 
-        <div class="sprint-box" style="border-left-color: var(--branch)">
-            <h3>Phase 2: Code Integration <span class="time-est">Est: 1.5 Days</span></h3>
-            
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>1. Android: Add Dependency</strong>
-                    <p>Update <code>build.gradle</code> module file.</p>
-                    <span class="code-snippet">implementation 'io.branch.sdk.android:library:5.+'</span>
-                </div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>2. iOS: Add Associated Domains</strong>
-                    <p>In Xcode > Signing & Capabilities. Add <code>applinks:kickit.app.link</code>. This is the "magic" step for Universal Links.</p>
-                </div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>3. iOS: Add Keys to Info.plist</strong>
-                    <p>Add <code>branch_key</code> string and <code>branch_universal_link_domains</code> array.</p>
-                </div>
+    <section class="journey-section">
+        <h2 class="journey-title reveal">Where we lose them</h2>
+        <div class="timeline-step reveal">
+            <div class="step-icon"><i class="fas fa-envelope-open-text"></i></div>
+            <div class="step-content">
+                <h3>1. The Outreach</h3>
+                <p>We send an email or run an ad for "Kick It". The user is interested.</p>
             </div>
         </div>
-    </div>
-
-    <div id="plan-appsflyer" class="plan-display">
-        <div class="plan-header">
-            <span class="plan-badge" style="background:var(--appsflyer)">Selected: AppsFlyer</span>
-            <h2>One-Man Shop Integration Plan</h2>
-        </div>
-
-        <div class="sprint-box" style="border-left-color: var(--appsflyer)">
-            <h3>Phase 1: Zero Plan Setup <span class="time-est">Est: 1 Hour</span></h3>
-            
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>1. Create Account & Select "Zero" Plan</strong>
-                    <p>No credit card usually required for the free tier. Grab your <code>Dev_Key</code> from the dashboard settings.</p>
-                </div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>2. Apple App Store Connect</strong>
-                    <p>You DO NOT need to change anything in the store listing yet, but you will need your Apple ID (e.g., <code>id123456789</code>) for the AppsFlyer dashboard.</p>
-                </div>
+        <div class="timeline-step reveal">
+            <div class="step-icon"><i class="fas fa-mouse-pointer"></i></div>
+            <div class="step-content">
+                <h3>2. The Click</h3>
+                <p>They click the link. <br><span class="alert">Without a tool, the trail ends here for iOS.</span></p>
             </div>
         </div>
-
-        <div class="sprint-box" style="border-left-color: var(--appsflyer)">
-            <h3>Phase 2: Code Integration <span class="time-est">Est: 1 Day</span></h3>
-            
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>1. iOS: Add Pod & ATT Prompt</strong>
-                    <p>Add <code>pod 'AppsFlyerLib'</code>. <b>Crucial:</b> You must add the code to request user permission for tracking (ATT) in <code>AppDelegate</code>.</p>
-                    <span class="code-snippet">AppsFlyerLib.shared().waitForATTUserAuthorization</span>
-                </div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>2. Android: Permissions</strong>
-                    <p>Ensure <code>INTERNET</code> and <code>ACCESS_NETWORK_STATE</code> are in the Manifest. (You likely already have these).</p>
-                </div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>3. The "Kitchen Test"</strong>
-                    <p>Install the "Debug" version on your phone. Click a test link. Verify "Non-Organic Install" appears in the dashboard within 2 minutes.</p>
-                </div>
+        <div class="timeline-step reveal">
+            <div class="step-icon" style="background: #10b981;"><i class="fas fa-link"></i></div>
+            <div class="step-content">
+                <h3>3. The Solution</h3>
+                <p><strong>Branch / AppsFlyer</strong> bridges this gap by "fingerprinting" the click and matching it to the install.</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="plan-manual" class="plan-display">
-        <div class="plan-header">
-            <span class="plan-badge" style="background:var(--hubspot)">Selected: Manual (HubSpot)</span>
-            <h2>One-Man Shop Integration Plan</h2>
+    <section class="matrix-section">
+        <h2 class="reveal" style="text-align: center; font-size: 2rem;">Feature Comparison</h2>
+        <table class="comparison-table reveal">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Branch.io</th>
+                    <th>AppsFlyer</th>
+                    <th>Manual (HubSpot)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>iOS Attribution</strong></td>
+                    <td><i class="fas fa-star" style="color:#FFD700"></i> Best</td>
+                    <td><i class="fas fa-check check"></i> Excellent</td>
+                    <td><i class="fas fa-times cross"></i> Blind</td>
+                </tr>
+                <tr>
+                    <td><strong>Deep Linking</strong></td>
+                    <td><i class="fas fa-star" style="color:#FFD700"></i> Industry Standard</td>
+                    <td><i class="fas fa-check check"></i> Good (OneLink)</td>
+                    <td><i class="fas fa-times cross"></i> None</td>
+                </tr>
+                <tr>
+                    <td><strong>Cost to Start</strong></td>
+                    <td>~$2,400 / yr</td>
+                    <td><span style="color:#10b981; font-weight:bold;">$0 / yr</span></td>
+                    <td>$0 (Time)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="decision-section" id="action-plan">
+        <div class="decision-header reveal">
+            <h2 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Implementation Strategy</h2>
+            <p style="color: #64748b;">Select a path below to generate the custom work plan for the Kick It California app.</p>
         </div>
 
-        <div class="sprint-box" style="border-left-color: var(--hubspot)">
-            <h3>Phase 1: Marketing Setup <span class="time-est">Est: 3 Hours</span></h3>
-            
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>1. Create "Gateway" Landing Page</strong>
-                    <p>Build a simple HubSpot LP. It must have two buttons: "Download iOS" and "Download Android".</p>
+        <div class="decision-grid reveal">
+            <div class="option-card" data-type="branch" onclick="selectPlan('branch')">
+                <h3 style="margin-bottom:0.5rem;"><i class="fas fa-code-branch" style="color:var(--branch); margin-right:10px;"></i> Branch.io</h3>
+                <p style="font-size:1.2rem; font-weight:bold; color:var(--text-dark);">~$200/mo</p>
+                <p style="font-size:0.9rem; color:#64748b; margin: 1rem 0;">Best for Deep Linking (Email-to-App). Requires contract navigation.</p>
+                <button class="btn-select">Select Strategy</button>
+            </div>
+
+            <div class="option-card" data-type="appsflyer" onclick="selectPlan('appsflyer')">
+                <h3 style="margin-bottom:0.5rem;"><i class="fas fa-paper-plane" style="color:var(--appsflyer); margin-right:10px;"></i> AppsFlyer</h3>
+                <p style="font-size:1.2rem; font-weight:bold; color:var(--text-dark);">Free <span style="font-size:0.8rem; font-weight:normal;">(Zero Plan)</span></p>
+                <p style="font-size:0.9rem; color:#64748b; margin: 1rem 0;">Best for Attribution Analytics. Free for startups.</p>
+                <button class="btn-select">Select Strategy</button>
+            </div>
+
+            <div class="option-card" data-type="manual" onclick="selectPlan('manual')">
+                <h3 style="margin-bottom:0.5rem;"><i class="fab fa-hubspot" style="color:var(--hubspot); margin-right:10px;"></i> Manual</h3>
+                <p style="font-size:1.2rem; font-weight:bold; color:var(--text-dark);">$0 <span style="font-size:0.8rem; font-weight:normal;">(High Labor)</span></p>
+                <p style="font-size:0.9rem; color:#64748b; margin: 1rem 0;">Uses existing HubSpot LP. No iOS deep install tracking.</p>
+                <button class="btn-select">Select Strategy</button>
+            </div>
+        </div>
+
+        <div id="plan-branch" class="plan-display">
+            <div class="plan-header">
+                <span class="plan-badge" style="background:var(--branch)">Selected: Branch.io</span>
+                <h2>One-Man Shop Integration Plan</h2>
+            </div>
+            <div class="sprint-box" style="border-left-color: var(--branch)">
+                <h3 style="color:var(--branch)">Phase 1: Admin & Config</h3>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>1. Sign up for "Launch" Plan</strong><p>Requires credit card. Watch MAU limits.</p></div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>2. Config Link Domain</strong><p>Set up <code>kickit.app.link</code> in dashboard.</p></div>
                 </div>
             </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>2. Button Tracking</strong>
-                    <p>Create a HubSpot "Call-to-Action" (CTA) button for each store. This tracks the <i>click</i> intent.</p>
+            <div class="sprint-box" style="border-left-color: var(--branch)">
+                <h3 style="color:var(--branch)">Phase 2: Dev Work</h3>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>1. iOS: Assoc. Domains</strong><p>Add <code>applinks:kickit.app.link</code> in Xcode.</p></div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>2. iOS: Info.plist</strong><p>Add <code>branch_key</code> string.</p></div>
                 </div>
             </div>
         </div>
 
-        <div class="sprint-box" style="border-left-color: var(--hubspot)">
-            <h3>Phase 2: The Manual Routine <span class="time-est">Recurring: Monthly</span></h3>
-            
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>1. Database Export</strong>
-                    <p>Write a SQL query or use admin panel to export all new User Emails from the App Database for the last 30 days.</p>
-                </div>
+        <div id="plan-appsflyer" class="plan-display">
+            <div class="plan-header">
+                <span class="plan-badge" style="background:var(--appsflyer)">Selected: AppsFlyer</span>
+                <h2>One-Man Shop Integration Plan</h2>
             </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <div class="custom-checkbox"><i class="fas fa-check"></i></div>
-                <div class="task-content">
-                    <strong>2. HubSpot Import</strong>
-                    <p>Import CSV to HubSpot. Map emails. Update property <code>App_Status</code> to "Installed".</p>
+            <div class="sprint-box" style="border-left-color: var(--appsflyer)">
+                <h3 style="color:var(--appsflyer)">Phase 1: Setup</h3>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>1. Select "Zero" Plan</strong><p>No credit card required. Get <code>Dev_Key</code>.</p></div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>2. iOS: Add Pod</strong><p><code>pod 'AppsFlyerLib'</code></p></div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>3. iOS: ATT Prompt</strong><p>Add tracking permission request in AppDelegate.</p><span class="code-snippet">AppsFlyerLib.shared().waitForATTUserAuthorization</span></div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div id="plan-manual" class="plan-display">
+            <div class="plan-header">
+                <span class="plan-badge" style="background:var(--hubspot)">Selected: Manual</span>
+                <h2>One-Man Shop Integration Plan</h2>
+            </div>
+            <div class="sprint-box" style="border-left-color: var(--hubspot)">
+                <h3 style="color:var(--hubspot)">Phase 1: Workflow</h3>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>1. Create Gateway LP</strong><p>HubSpot page with "Download iOS" buttons.</p></div>
+                </div>
+                <div class="checklist-item" onclick="toggleCheck(this)">
+                    <div class="custom-checkbox"><i class="fas fa-check"></i></div>
+                    <div class="task-content"><strong>2. Monthly Export</strong><p>SQL export of new user emails from App DB.</p></div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; background: #2c3e50; color: white;">
+        <p>&copy; 2026 Kick It California / ASQ Project Research</p>
+    </footer>
 
     <script>
+        // SCROLL ANIMATION
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            var steps = document.querySelectorAll(".timeline-step");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 150) reveals[i].classList.add("active");
+            }
+            for (var j = 0; j < steps.length; j++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = steps[j].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) steps[j].classList.add("active");
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+
+        // SELECTION LOGIC
         function selectPlan(type) {
-            // 1. Remove selected class from all cards
             document.querySelectorAll('.option-card').forEach(card => {
                 card.classList.remove('selected');
-                // Reset text
                 card.querySelector('.btn-select').innerText = "Select Strategy";
             });
-
-            // 2. Add selected class to clicked card
+            
             const selectedCard = document.querySelector(`.option-card[data-type="${type}"]`);
             selectedCard.classList.add('selected');
             selectedCard.querySelector('.btn-select').innerText = "Selected";
 
-            // 3. Hide all plans
-            document.querySelectorAll('.plan-display').forEach(plan => {
-                plan.classList.remove('active');
-            });
-
-            // 4. Show chosen plan
+            document.querySelectorAll('.plan-display').forEach(plan => plan.classList.remove('active'));
+            
             const targetPlan = document.getElementById(`plan-${type}`);
             if(targetPlan) {
                 targetPlan.classList.add('active');
-                // Scroll to plan
-                setTimeout(() => {
-                    targetPlan.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                setTimeout(() => targetPlan.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
             }
         }
 
         function toggleCheck(item) {
-            const checkbox = item.querySelector('.custom-checkbox');
-            checkbox.classList.toggle('checked');
+            item.querySelector('.custom-checkbox').classList.toggle('checked');
         }
     </script>
 </body>
